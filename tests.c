@@ -1,4 +1,5 @@
 #include "binary-tree.h"
+#include "finding-divisors.h"
 #include <stdio.h>
 #include <assert.h>
 
@@ -23,10 +24,16 @@ void binary_tree_test() {
   printf("PASSED\n");
 }
 
+void finding_divisors_test() {
+  printf("Running test: finding_divisors_test ... ");
+  printf("PASSED\n");
+}
+
 int main(void) {
   printf("Testing...\n");
   /* tests */
   binary_tree_test();
+  finding_divisors_test():
   printf("Tests passed.\n");
   return 0;
 }
