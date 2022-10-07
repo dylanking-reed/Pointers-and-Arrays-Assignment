@@ -26,4 +26,8 @@ void tree_add(Tree* t, uint32_t val);
 /// Returns 1 if the tree contained the value before removal,
 /// 0 if the tree did not contain the value.
 int tree_remove(Tree* t, uint32_t val);
+
+void tree_free(Tree *t);
+
+void tree_print(Tree *t);
 #endif

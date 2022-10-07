@@ -22,33 +22,37 @@ Node* node_new(uint32_t val) {
 }
 
 
-void tree_add_node(Node* root, Node* to_add) {
+int tree_add_node(Node* root, Node* to_add) {
   if (to_add->val < root->val) {
     if (root->left == NULL) {
       root->left = to_add;
-      return;
+      return 1;
     } else {
-      tree_add_node(root->left, to_add);
+      return tree_add_node(root->left, to_add);
     }
   } else if (to_add->val > root->val) {
     if (root->right == NULL) {
       root->right = to_add;
-      return;
+      return 1;
     } else {
-      tree_add_node(root->right, to_add);
+      return tree_add_node(root->right, to_add);
     }
   } else {
     // no duplicates
     free(to_add);
-    return;
+    return 0;
   }  
 }
 
 /// Adds a value to tree `t`.
 void tree_add(Tree* t, uint32_t val) {
   Node* new = node_new(val); 
-  if (t->root == NULL) t->root = new;
-  tree_add_node(t->root, new);
+  if (t->root == NULL) {
+    t->root = new;
+    t->size += 1;
+  } else {
+    t->size += tree_add_node(t->root, new);
+  }
 }
 /// Allocates a new tree and fills it with values from `array`.
 Tree* tree_from(uint32_t* array, size_t array_len) {
@@ -93,15 +97,61 @@ void node_remove_right(Node* n) {
   free(old);
 }
 
+int node_remove_child(Node* root, uint32_t val) {
+  assert(root->val != val);
+  if (root->val < val) {
+    if (root->right == NULL) {
+      return 0;
+    } else if (root->right->val == val) {
+      node_remove_right(root);
+      return 1;
+    } else {
+      return node_remove_child(root->right, val);
+    } 
+  } else {
+    assert(root->val > val);
+    if (root->left == NULL) {
+      return 0;
+    } else if (root->left->val == val) {
+      node_remove_left(root);
+      return 1;
+    } else {
+      return node_remove_child(root->left, val);
+    } 
+  } 
+}
+
 /// Removes a value from tree `t`, Promoting from the left. 
 /// Returns 1 if the tree contained the value before removal,
 /// 0 if the tree did not contain the value.
 int tree_remove(Tree* t, uint32_t val) {
+  if (t->root == NULL) return 0;
   if (t->root->val == val) {
     tree_remove_root(t);
     return 1;
   } else {
-  
+    return node_remove_child(t->root, val); 
+  }
+}
+
+void node_free(Node *n) {
+  if (n == NULL) return;
+  if (n->left == NULL && n->right == NULL) {
+    free(n);
+  } else {
+    node_free(n->left);
+    node_free(n->right);
+    free(n);
+  }
+}
+
+
+void tree_free(Tree *t) {
+  if (t->root == NULL) {
+    free(t);
+  } else {
+    node_free(t->root); 
+    free(t);
   }
 }
 
