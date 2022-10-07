@@ -1,5 +1,6 @@
 #include "binary-tree.h"
 #include "finding-divisors.h"
+#include "substrings.h"
 #include <stdio.h>
 #include <assert.h>
 
@@ -51,11 +52,22 @@ void finding_divisors_test() {
   printf("PASSED\n");
 }
 
+void substrings_test() {
+  printf("Running test: substrings_test ... ");
+  char* helloworld = "Hello, world!";
+  char* world = find_substring(helloworld, "world");
+  assert(world == &(helloworld[7]));
+  char* ello = copy_substring(helloworld, 1, 4); 
+  printf("%s", ello);
+  printf("PASSED\n");
+}
+
 int main(void) {
   printf("Testing...\n");
   /* tests */
   binary_tree_test();
   finding_divisors_test();
+  substrings_test();
   printf("Tests passed.\n");
   return 0;
 }
