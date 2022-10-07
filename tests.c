@@ -8,6 +8,20 @@ int dbg(int a) {
   return a;
 }
 
+
+/// Prints an array of `uint32_t`s.
+void uint32_array_print(uint32_t* a, size_t a_len) {
+  printf("{ ");
+  for (size_t i = 0; i < a_len; i++) printf("%d, ", a[i]);
+  printf("}");
+}
+
+/// Prints an array of `uint32_t`s with a newline.
+void uint32_array_println(uint32_t* a, size_t a_len) {
+  uint32_array_print(a, a_len); printf("\n"); 
+}
+
+
 void binary_tree_test() {
   printf("Running test: binary_tree_test ... ");
   /* assertions */
@@ -26,6 +40,14 @@ void binary_tree_test() {
 
 void finding_divisors_test() {
   printf("Running test: finding_divisors_test ... ");
+  uint32_t a[3] = {2, 5, 6};
+  uint32_t divisors[3];
+  size_t divisors_len = 0;
+  uint32_t dividends[3];
+  size_t dividends_len = 0;
+  find_divisors(a, 3, divisors, &divisors_len, dividends, &dividends_len);
+  uint32_array_print(divisors, divisors_len);
+  uint32_array_print(dividends, dividends_len);
   printf("PASSED\n");
 }
 
@@ -33,7 +55,7 @@ int main(void) {
   printf("Testing...\n");
   /* tests */
   binary_tree_test();
-  finding_divisors_test():
+  finding_divisors_test();
   printf("Tests passed.\n");
   return 0;
 }
